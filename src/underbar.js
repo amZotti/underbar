@@ -81,13 +81,19 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    var validElements = [];
+    for (var i = 0;i < collection.length;i++)
+      if (test(collection[i])) validElements.push(collection[i]);
+    return validElements;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
-    // TIP: see if you can re-use _.filter() here, without simply
-    // copying code in and modifying it
-  };
+      function testWrapper(value, index, collection) {
+        return !(test(value, index, collection));
+    }
+    return _.filter(collection, testWrapper);
+  }
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
