@@ -203,15 +203,20 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     iterator = iterator || _.identity;
-    return true == _.reduce(collection, function(result, currentValue) {
-      return (invalid(result)) == false && iterator(currentValue);
+    return _.reduce(collection, function(result, currentValue) {
+      return Boolean((invalid(result)) == false && iterator(currentValue));
     }, true);
   }
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
-    // TIP: There's a very clever way to re-use every() here.
-  };
+    iterator = iterator || _.identity;
+    var result = false;
+    _.each(collection, function(value) {
+      result = Boolean(iterator(value)) || result;
+    });
+  return result;
+  }
 
 
   /**
