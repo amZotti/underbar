@@ -55,10 +55,10 @@
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
     if (Array.isArray(collection))
-      for (var i = 0;i < collection.length;i++) 
+      for (var i = 0;i < collection.length;i++)
         iterator(collection[i], i, collection);
     else
-      for (var i in collection) 
+      for (var i in collection)
         iterator(collection[i], i, collection);
   };
 
@@ -145,19 +145,19 @@
   // Reduces an array or object to a single value by repetitively calling
   // iterator(accumulator, item) for each item. accumulator should be
   // the return value of the previous iterator call.
-  //  
+  //
   // You can pass in a starting value for the accumulator as the third argument
   // to reduce. If no starting value is passed, the first element is used as
   // the accumulator, and is never passed to the iterator. In other words, in
   // the case where a starting value is not passed, the iterator is not invoked
   // until the second element, with the first element as it's second argument.
-  //  
+  //
   // Example:
   //   var numbers = [1,2,3];
   //   var sum = _.reduce(numbers, function(total, number){
   //     return total + number;
   //   }, 0); // should be 6
-  //  
+  //
   //   var identity = _.reduce([5], function(total, number){
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
@@ -168,9 +168,17 @@
       accumulator = collection[0];
       i = 1;
     }
-    while (i < collection.length)
-      accumulator = iterator(accumulator, collection[i++]);
-    return accumulator;
+    if (collection.length === undefined) {
+      for (var key in collection)
+        accumulator = iterator(accumulator, collection[key]);
+      return accumulator;
+    }
+    else
+    {
+      while (i < collection.length)
+        accumulator = iterator(accumulator, collection[i++]);
+      return accumulator;
+    }
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -185,12 +193,20 @@
     }, false);
   };
 
+  function invalid(result) {
+    return !(result != null &&
+        result != undefined &&
+        (typeof(result) == "object" ||
+         result == true));
+  }
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-    // TIP: Try re-using reduce() here.
-  };
-
+    iterator = iterator || _.identity;
+    return true == _.reduce(collection, function(result, currentValue) {
+      return (invalid(result)) == false && iterator(currentValue);
+    }, true);
+  }
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
