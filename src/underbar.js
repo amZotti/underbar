@@ -472,5 +472,17 @@
     //
     // Note: This is difficult! It may take a while to implement.
     _.throttle = function(func, wait) {
+      var timerActive = false;
+      var activateTimer = function(wait) {
+        timerActive = false;
+      };
+      return function() {
+        if (!timerActive) {
+          timerActive = true;
+          setTimeout(activateTimer, wait);
+          var result = func.apply(this, arguments);
+          return result;
+        }
+      };
     };
-    }());
+}());
