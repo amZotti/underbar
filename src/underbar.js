@@ -379,12 +379,12 @@
         a = iterator(a);
         b = iterator(b);
       }
-      if (a < b)
-        return -1;
-      else if (a > b)
-        return 1;
-      else
-        return 0;
+    if (a < b)
+      return -1;
+    else if (a > b)
+      return 1;
+    else
+      return 0;
     });
   }
 
@@ -400,7 +400,7 @@
     var results = [];
     _.each(arrays, function(array) {
       if (array.length > largestArraySize)
-        largestArraySize = array.length;
+      largestArraySize = array.length;
     });
     for (var i = 0;i < largestArraySize;i++) {
       var result = [];
@@ -416,6 +416,17 @@
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+    var result = result || [];
+    var flattenHelper = function(nestedArray) {
+      _.each(nestedArray, function(element) {
+        if (Array.isArray(element))
+          flattenHelper(element);
+        else
+          result.push(element);
+      });
+    }
+    flattenHelper(nestedArray);
+    return result;
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
