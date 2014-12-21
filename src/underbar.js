@@ -241,7 +241,7 @@
     var objects = arguments;
     _.each(objects, function(object) {
       if (typeof(object) == "object") {
-        for (var key in object) 
+        for (var key in object)
           baseObject[key] = object[key];
       }
     });
@@ -307,7 +307,7 @@
     var results = {}
     return function() {
       var arr = Array.prototype.slice.call(arguments);
-      return results[arr] || (results[arr] = func.apply(this, arr)); 
+      return results[arr] || (results[arr] = func.apply(this, arr));
     }
   };
 
@@ -334,6 +334,16 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var arr = [];
+    var size = array.length;
+    arr.length = size;
+    _.each(array, function(element) {
+      var i = Math.floor(Math.random() * size);
+      if (arr[i] !== undefined)
+        for (i = 0;arr[i] !== undefined;i++);
+      arr[i] = element;
+    });
+    return arr;
   };
 
 
