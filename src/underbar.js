@@ -250,8 +250,18 @@
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
-  _.defaults = function(obj) {
-  };
+  _.defaults = function(baseObject) {
+      var objects = arguments;
+      _.each(objects, function(object) {
+        if (typeof(object) == "object") {
+          for (var key in object) {
+            if (baseObject[key] == undefined)
+              baseObject[key] = object[key];
+          }
+        }
+      });
+      return baseObject;
+    };
 
 
   /**
@@ -294,6 +304,11 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var results = {}
+    return function() {
+      var arr = Array.prototype.slice.call(arguments);
+      return results[arr] || (results[arr] = func.apply(this, arr)); 
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
