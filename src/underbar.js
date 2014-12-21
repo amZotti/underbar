@@ -420,9 +420,9 @@
     var flattenHelper = function(nestedArray) {
       _.each(nestedArray, function(element) {
         if (Array.isArray(element))
-          flattenHelper(element);
+        flattenHelper(element);
         else
-          result.push(element);
+        result.push(element);
       });
     }
     flattenHelper(nestedArray);
@@ -451,13 +451,26 @@
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+    var arrays = Array.prototype.slice.call(arguments);
+    var elementCount = {};
+    var primaryElements = arrays[0];
+    var allElements = _.flatten(arrays);
+    var differences = [];
+    _.each(allElements, function(element) {
+      elementCount[element] = (elementCount[element] + 1) || 1;
+    });
+    for (var i = 0;i < primaryElements.length;i++) { 
+      if (elementCount[primaryElements[i]] == 1)
+        differences.push(primaryElements[i]);
+    }
+    return differences;
   };
 
-  // Returns a function, that, when invoked, will only be triggered at most once
-  // during a given window of time.  See the Underbar readme for extra details
-  // on this function.
-  //
-  // Note: This is difficult! It may take a while to implement.
-  _.throttle = function(func, wait) {
-  };
-}());
+    // Returns a function, that, when invoked, will only be triggered at most once
+    // during a given window of time.  See the Underbar readme for extra details
+    // on this function.
+    //
+    // Note: This is difficult! It may take a while to implement.
+    _.throttle = function(func, wait) {
+    };
+    }());
