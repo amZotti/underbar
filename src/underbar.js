@@ -89,8 +89,8 @@
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
-      function testWrapper(value, index, collection) {
-        return !(test(value, index, collection));
+    function testWrapper(value, index, collection) {
+      return !(test(value, index, collection));
     }
     return _.filter(collection, testWrapper);
   }
@@ -215,7 +215,7 @@
     _.each(collection, function(value) {
       result = Boolean(iterator(value)) || result;
     });
-  return result;
+    return result;
   }
 
 
@@ -242,7 +242,7 @@
     _.each(objects, function(object) {
       if (typeof(object) == "object") {
         for (var key in object)
-          baseObject[key] = object[key];
+      baseObject[key] = object[key];
       }
     });
     return baseObject;
@@ -251,17 +251,17 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(baseObject) {
-      var objects = arguments;
-      _.each(objects, function(object) {
-        if (typeof(object) == "object") {
-          for (var key in object) {
-            if (baseObject[key] == undefined)
-              baseObject[key] = object[key];
-          }
+    var objects = arguments;
+    _.each(objects, function(object) {
+      if (typeof(object) == "object") {
+        for (var key in object) {
+          if (baseObject[key] == undefined)
+      baseObject[key] = object[key];
         }
-      });
-      return baseObject;
-    };
+      }
+    });
+    return baseObject;
+  };
 
 
   /**
@@ -340,8 +340,8 @@
     _.each(array, function(element) {
       var i = Math.floor(Math.random() * size);
       if (arr[i] !== undefined)
-        for (i = 0;arr[i] !== undefined;i++);
-      arr[i] = element;
+      for (i = 0;arr[i] !== undefined;i++);
+    arr[i] = element;
     });
     return arr;
   };
@@ -360,8 +360,8 @@
   _.invoke = function(collection, functionOrKey, args) {
     return _.map(collection, function(element) {
       if (typeof(functionOrKey) == "string")
-        return element[functionOrKey]();
-      return functionOrKey.apply(element);
+      return element[functionOrKey]();
+    return functionOrKey.apply(element);
     });
   };
 
@@ -370,7 +370,23 @@
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
-  };
+    return collection.sort(function(a, b) {
+      if (typeof(iterator) == "string") {
+        a = a[iterator];
+        b = b[iterator];
+      }
+      else {
+        a = iterator(a);
+        b = iterator(b);
+      }
+      if (a < b)
+        return -1;
+      else if (a > b)
+        return 1;
+      else
+        return 0;
+    });
+  }
 
   // Zip together two or more arrays with elements of the same index
   // going together.
